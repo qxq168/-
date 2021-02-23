@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        
+        a{
+            text-decoration: none;
+            color: #000;
+        }
+        .menu .button-menu{
+            display: block;
+            width: 2em;
+            height: 2em;
+            position: relative;
+            padding: 0.5em;
+            margin: 0.5em;
+            float: left;
+        }
+
+        .menu .button-menu .button-bar{
+            width: 2em;
+            height: 0.2em;
+            background-color: #000;
+            position: absolute;
+            top: 50%;
+            transition: 0.3s ease-in-out;
+        }
+
+        .menu .collapsed .button-bar:nth-child(1){
+            left: 0.5em;
+            transform-origin: right center;
+            transform: translate(0,-0.5em);
+        }
+        .menu .collapsed .button-bar:nth-child(2){
+            transform: none;
+        }
+        .menu .collapsed .button-bar:nth-child(3){
+            right: 0.5em;
+            transform-origin: right center;
+            transform: translate(0,0.5em);
+        }
+
+        .menu .expanded .button-bar:nth-child(1){
+            width: 1em;
+            left: 0.5em;
+            transform-origin: right center;
+            transform: translate(0,0) rotateZ(45deg);
+        }
+        .menu .expanded .button-bar:nth-child(2){
+            transform: rotateZ(-45deg);
+        }
+        .menu .expanded .button-bar:nth-child(3){
+            width: 1em;
+            right: 0.5em;
+            transform-origin: left center;
+            transform: translate(0,0) rotateZ(45deg);
+        }
+
+        /* ==================下拉框===================== */
+        .header-menu{
+            width: 16em;
+            position: absolute;
+            top: -35em;
+            left: 0;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .header-menu .nav-links{
+            margin-left: 1em;
+            border-left: 0.1em solid #999;
+        }
+
+        .header-menu .nav-links .nav-link{
+            display: block;
+            margin-left: 1em;
+            line-height: 41px;
+            padding: 1.5em 1.5em 1.5em 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .header-menu .nav-links .nav-link .nav-link-name-e{
+            position: absolute;
+            left: 0;
+            top: 0.575em;
+            font-size: 3em;
+            color: rgba(102, 102, 102, 0.1);
+            font-family: HelveticaInserat,sans-serif;
+            
+        }
+
+        .header-menu .nav-links .nav-link .nav-link-name{
+            display: inline-block;
+        }
+
+        .header-menu .nav-links .nav-link .nav-link-name::before{
+            content: '';
+            display: inline-block;
+            background-color: #2bf; 
+            width: 0em;
+            height: 0.25em;
+            margin-top: 1em;
+            margin-right: 0em;
+            vertical-align: top;
+            transition: all ease-in-out 0.3s;
+        }
+
+        .header-menu .nav-links .nav-link:hover .nav-link-name::before{
+            margin-right: 0.75em;
+        }
+
+        .header-menu .nav-links .nav-link:hover .twoL::before{
+            width: 9.5em;
+        }
+
+        .header-menu .nav-links .nav-link:hover .thrL::before{
+            width: 8.5em;
+        }
+
+        .header-menu .nav-links .nav-link:hover .fouL::before{
+            width: 7.5em;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu collapsed">
+        <a href="##" class="button-menu collapsed">
+            <span class="button-bar"></span>
+            <span class="button-bar"></span>
+            <span class="button-bar"></span>
+        </a>
+        <div class="header-menu">
+            <div class="nav-links">
+                <a href="##" class="nav-link">
+                    <span class="nav-link-name-e">HOME</span>
+                    <span class="nav-link-name twoL">首页</span>
+                </a>
+                <a href="##" class="nav-link">
+                    <span class="nav-link-name-e">NEWS</span>
+                    <span class="nav-link-name twoL">情报</span>
+                </a>
+                <a href="##" class="nav-link">
+                    <span class="nav-link-name-e">CHARACTER</span>
+                    <span class="nav-link-name twoL">干员</span>
+                </a>
+                <a href="##" class="nav-link">
+                    <span class="nav-link-name-e">STORY</span>
+                    <span class="nav-link-name thrL">世界观</span>
+                </a>
+                <a href="##" class="nav-link">
+                    <span class="nav-link-name-e">ARCHIVE</span>
+                    <span class="nav-link-name twoL">档案</span>
+                </a>
+                <a href="##" class="nav-link">
+                    <span class="nav-link-name-e">DASHBOARD</span>
+                    <span class="nav-link-name fouL">个人中心</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 获取button-menu
+        var button_menu = document.getElementsByClassName("button-menu")[0];
+        // 获取header-menu
+        var header_menu = document.getElementsByClassName("header-menu")[0];
+        
+        // 创建标志位
+        var flag = false;
+        // 为button-menu绑定单击响应事件
+        button_menu.onclick = function () {
+            if(flag){
+                // 移除expanded，添加collapsed
+                removeClass(button_menu,"expanded");
+                addClass(button_menu,"collapsed");
+                header_menu.style.top = "-35em";
+                header_menu.style.opacity = '0';
+
+            } else{
+                // 移除collapsed，添加expanded
+                removeClass(button_menu,"collapsed");
+                addClass(button_menu,"expanded");
+                header_menu.style.top = "4em";
+                header_menu.style.opacity = '1';
+            }
+            flag = !flag;
+        }  
+
+        // 判断一个元素中是否有类
+        function hasClass(Event,Class) {
+            // 判断Event中是否有Class
+            // 创建一个正则表达式
+            var reg = new RegExp('\\b' + Class + '\\b');
+            return reg.test(Event.className);
+        }
+
+        // 在元素中添加一个类
+        function addClass(Event,Class) {
+            if(!hasClass(Event,Class)){
+                Event.className += "" + Class; 
+            }
+        }
+
+        // 在元素中删除一个类
+        function removeClass(Event,Class) {
+            var reg = new RegExp('\\b' + Class + '\\b');
+            Event.className = Event.className.replace(reg,'');
+        }
+
+        // 切换一个类
+        function toggleClass(Event,Class) {
+            if(hasClass(Event,Class)){
+                // 有则删除
+                removeClass(Event,Class);
+            } else{
+                // 无则添加
+                addClass(Event,Class);
+            }
+        }
+
+        // 添加div
+        function addElementDiv(obj) {
+            var parent = document.getElementsByClassName(obj)[0];
+            // 添加div
+            var div = document.createElement("div");
+            // 设置div的属性，class
+        }
+    </script>
+</body>
+</html>
